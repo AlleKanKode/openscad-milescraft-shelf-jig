@@ -3,10 +3,19 @@ module rounded_rectangle(bredde, laengde, hoejde, radius, $fn = 60) {
     if (bredde < 2*radius || laengde < 2*radius) {
         echo("FEJL: Bredde eller længde er for lille i forhold til radius. Kan ikke skabe formen.");
     } else {
-        minkowski() {
-            cube([bredde - 2*radius, laengde - 2*radius, hoejde], center = true);
-            // Tilføj center = true til cylinderen
-            cylinder(h = hoejde, r = radius, $fn = $fn, center = true); 
+        union() {
+            // Firkanten i midten af rektanglen
+            cube([bredde - 2*radius, laengde, hoejde], center = true);
+
+            // De to rektangler på siderne
+            cube([bredde, laengde - 2*radius, hoejde], center = true);
+
+            // De fire afrundede hjørner
+            // Vi placerer fire cylindre i hvert hjørne
+            translate([bredde/2 - radius, laengde/2 - radius, 0]) cylinder(h = hoejde, r = radius, $fn = $fn, center = true);
+            translate([-bredde/2 + radius, laengde/2 - radius, 0]) cylinder(h = hoejde, r = radius, $fn = $fn, center = true);
+            translate([bredde/2 - radius, -laengde/2 + radius, 0]) cylinder(h = hoejde, r = radius, $fn = $fn, center = true);
+            translate([-bredde/2 + radius, -laengde/2 + radius, 0]) cylinder(h = hoejde, r = radius, $fn = $fn, center = true);
         }
     }
 }
