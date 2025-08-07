@@ -49,13 +49,14 @@ module add_holes(hul_diameter, hul_afstand_x, hul_afstand_y, hoejde, $fn = 60) {
     }
 }
 
-            
-
-
 
 // Samleobjekt
-
 union() {
+    // mdim_ variables are used for fixed values needed for the Milescraft Shelf Jig
+    mdim_length = 185;
+    mdim_holes_distance = 161;
+    mdim_layer_height = 5;
+    
     hoejde_val = 5;
     gulv = hoejde_val /2;
     samlede_bredde = 80;
