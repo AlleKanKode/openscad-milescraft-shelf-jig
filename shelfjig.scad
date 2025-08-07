@@ -1,5 +1,5 @@
-// bredden på fisken
-fisk = 100;
+// Distance from edge in mm
+edge_distance = 7;
 
 // Modul til at skabe en rektangel med afrundede hjørner
 module rounded_rectangle(bredde, laengde, hoejde, radius, $fn = 60) {
@@ -54,8 +54,15 @@ module add_holes(hul_diameter, hul_afstand_x, hul_afstand_y, hoejde, $fn = 60) {
 union() {
     // mdim_ variables are used for fixed values needed for the Milescraft Shelf Jig
     mdim_length = 185;
-    mdim_holes_distance = 161;
-    mdim_layer_height = 5;
+    
+    // thickness of the parts
+    mdim_thick_jig = 6;
+    mdim_thick_top = 5;
+    mdim_thick_edge = 15;   
+    
+    // holes dimensions
+    mdim_holes_distance = 161;   
+    mdim_holes_edge_distance = 10;   
     
     hoejde_val = 5;
     gulv = hoejde_val /2;
