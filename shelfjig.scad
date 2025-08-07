@@ -1,3 +1,6 @@
+// bredden på fisken
+fisk = 100;
+
 // Modul til at skabe en rektangel med afrundede hjørner
 module rounded_rectangle(bredde, laengde, hoejde, radius, $fn = 60) {
     if (bredde < 2*radius || laengde < 2*radius) {
@@ -46,20 +49,31 @@ module add_holes(hul_diameter, hul_afstand_x, hul_afstand_y, hoejde, $fn = 60) {
     }
 }
 
+            
+
+
+
 // Samleobjekt
-// Samleobjekt
+
 union() {
     hoejde_val = 5;
+    gulv = hoejde_val /2;
+    samlede_bredde = 80;
+    samlede_lengde = 185;
 
+    
     // Første rektangel uden huller
-    translate([0, 0, hoejde_val / 2]) {
-        rounded_rectangle(bredde = 180, laengde = 40, hoejde = hoejde_val, radius = 5);
+    // Den nederste klods
+    translate([0, 0, gulv]) {
+        rounded_rectangle(bredde = samlede_lengde, laengde = samlede_bredde, hoejde = hoejde_val, radius = 5);
     }
-
+    
+    
     // Anden rektangel uden huller, placeret ved siden af
-    translate([0, -60, hoejde_val / 2]) {
-        rounded_rectangle(bredde = 150, laengde = 30, hoejde = hoejde_val, radius = 3);
-    }
+    translate([0, 50, gulv + hoejde_val]) {
+        rounded_rectangle(bredde = samlede_lengde, laengde = 30, hoejde = hoejde_val, radius = 3);
+    }   
+    
     
     // Tredje rektangel med huller
     // Her beregnes den korrekte afstand fra midten
