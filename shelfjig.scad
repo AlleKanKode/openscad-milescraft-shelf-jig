@@ -54,6 +54,10 @@ module add_holes(hul_diameter, hul_afstand_x, hul_afstand_y, hoejde, $fn = 60) {
 union() {
     // mdim_ variables are used for fixed values needed for the Milescraft Shelf Jig
     mdim_length = 185;
+    mdim_top_width  = 50;
+    mdim_base_width = 30;
+    
+    mdim_corner_radius = 5;
     
     // thickness of the parts
     mdim_thick_jig = 6;
@@ -62,49 +66,64 @@ union() {
     
     // holes dimensions
     mdim_holes_distance = 161;   
-    mdim_holes_edge_distance = 10;   
+    mdim_holes_edge_distance = 10; 
+    mdim_holes_width = 5;
     
+    /*
     hoejde_val = 5;
     gulv = hoejde_val /2;
     samlede_bredde = 80;
     samlede_lengde = 185;
+    */
+
+    bottom_y = (mdim_base_width + edge_distance) / 2;
+    bottom_z = (mdim_thick_edge) / 2;
+    
+    middle_y = (mdim_base_width) / 2;
+    middle_z = (mdim_thick_jig) / 2 + mdim_thick_edge;
+    
+    top_y    = (mdim_top_width) / 2;
+    top_z    = (mdim_thick_top) / 2 + mdim_thick_edge + mdim_thick_jig;
 
     
-    // Første rektangel uden huller
+    // The lower fench part
     // Den nederste klods
-    translate([0, 0, gulv]) {
-        rounded_rectangle(bredde = samlede_lengde, laengde = samlede_bredde, hoejde = hoejde_val, radius = 5);
+    translate([0, bottom_y, bottom_z]) {
+        rounded_rectangle(bredde = mdim_length, laengde = mdim_base_width + edge_distance, hoejde = mdim_thick_edge, radius = mdim_corner_radius);
     }
     
-    
-    // Anden rektangel uden huller, placeret ved siden af
-    translate([0, 50, gulv + hoejde_val]) {
-        rounded_rectangle(bredde = samlede_lengde, laengde = 30, hoejde = hoejde_val, radius = 3);
+    // The middle fench part    
+    color("green") {
+    translate([0, middle_y, middle_z]) {
+        rounded_rectangle(bredde = mdim_length, laengde = mdim_base_width, hoejde = mdim_thick_jig, radius = mdim_corner_radius);
     }   
+    }
     
     
     // Tredje rektangel med huller
     // Her beregnes den korrekte afstand fra midten
-    translate([0, 60, hoejde_val / 2]) {
-        bredde_3 = 130;
-        laengde_3 = 20;
-        afstand_fra_kanten = 5; // Ønsket afstand fra kanten i y-retningen
+    color("red") {
+    translate([0, top_y, top_z]) {
+        bredde_3 = mdim_length;
+        laengde_3 = mdim_top_width;
+        afstand_fra_kanten = mdim_holes_edge_distance; // Ønsket afstand fra kanten i y-retningen
         
         // Beregner afstanden fra midten, som add_holes-modulet forventer
         hul_afstand_y_beregnet = (laengde_3 / 2) - afstand_fra_kanten;
 
         add_holes(
-            hul_diameter = 5,
-            hul_afstand_x = 60,
+            hul_diameter = mdim_holes_width,
+            hul_afstand_x = mdim_holes_distance / 2,
             hul_afstand_y = hul_afstand_y_beregnet,
-            hoejde = hoejde_val
+            hoejde = mdim_thick_top
         ) {
             rounded_rectangle(
-                bredde = bredde_3,
-                laengde = laengde_3,
-                hoejde = hoejde_val,
-                radius = 3
+                bredde = mdim_length,
+                laengde = mdim_top_width,
+                hoejde = mdim_thick_top,
+                radius = mdim_corner_radius
             );
         }
+    }
     }
 }
